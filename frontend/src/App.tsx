@@ -1,7 +1,8 @@
 import {useState} from 'react';
 import logo from './assets/images/logo-universal.png';
 import './App.css';
-import {Greet} from "../wailsjs/go/main/App";
+import {GetTasks, Greet} from "../wailsjs/go/main/App";
+import {LogInfo} from "../wailsjs/runtime";
 
 function App() {
     const [resultText, setResultText] = useState("Please enter your name below 👇");
@@ -10,7 +11,16 @@ function App() {
     const updateResultText = (result: string) => setResultText(result);
 
     function greet() {
+        todos()
         Greet(name).then(updateResultText);
+    }
+
+    function todos() {
+        GetTasks().then(items => {
+           items.forEach(item => {
+               LogInfo(item.Id + " " + item.Text + " " + item.IsDone)
+           })
+        })
     }
 
     return (

@@ -25,3 +25,25 @@ func (a *App) startup(ctx context.Context) {
 func (a *App) Greet(name string) string {
 	return fmt.Sprintf("Hello %s, It's show time!", name)
 }
+
+type ToDo struct {
+	Id     string
+	Text   string
+	IsDone bool
+}
+
+var todos = map[string]*ToDo{
+	"1": &ToDo{
+		Id:     "1",
+		Text:   "Buy bread!",
+		IsDone: false,
+	},
+}
+
+func (a *App) GetTasks() []*ToDo {
+	list := make([]*ToDo, 0)
+	for _, item := range todos {
+		list = append(list, item)
+	}
+	return list
+}
