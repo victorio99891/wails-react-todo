@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 )
 
 // App struct
@@ -21,11 +20,6 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-// Greet returns a greeting for the given name
-func (a *App) Greet(name string) string {
-	return fmt.Sprintf("Hello %s, It's show time!", name)
-}
-
 type ToDo struct {
 	Id     string
 	Text   string
@@ -36,6 +30,11 @@ var todos = map[string]*ToDo{
 	"1": &ToDo{
 		Id:     "1",
 		Text:   "Buy bread!",
+		IsDone: false,
+	},
+	"2": &ToDo{
+		Id:     "1",
+		Text:   "Learn React!",
 		IsDone: false,
 	},
 }

@@ -3,5 +3,3 @@
 import {main} from '../models';
 
 export function GetTasks():Promise<Array<main.ToDo>>;
-
-export function Greet(arg1:string):Promise<string>;
