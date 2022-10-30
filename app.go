@@ -51,4 +51,5 @@ func (a *App) GetTasks() []*ToDo {
 func (a *App) ChangeTaskStatus(id string, status bool) {
 	log.Printf("Change status for task: %v to %v", id, status)
 	todos[id].IsDone = status
+	log.Println("&v", *todos[id])
 }
