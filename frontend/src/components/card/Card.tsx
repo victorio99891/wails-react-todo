@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import Task from "../../model/Task";
 
 type CardProps = {
@@ -9,8 +9,6 @@ type CardProps = {
 
 function Card({idx, task, changeStatus}: CardProps) {
 
-    const [isDone, setDone] = useState<boolean>(task.isDone)
-
     function toggleStatus() {
         const newStatus = !task.isDone
         changeStatus(task.id, idx, newStatus)
@@ -20,7 +18,7 @@ function Card({idx, task, changeStatus}: CardProps) {
         <div>
             Id: {task.id} / Idx: {idx}
             Text: {task.text}
-            Status: {isDone.toString()}
+            Status: {task.isDone.toString()}
             <button onClick={event => {
                 toggleStatus()
             }}>Toggle

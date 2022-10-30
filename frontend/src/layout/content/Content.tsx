@@ -27,7 +27,7 @@ function Content() {
 
     function loadTasks() {
         LoadTodos().then(apiTasks => {
-                setTasks(apiTasks)
+                setTasks([...apiTasks])
             }
         )
     }
@@ -36,7 +36,7 @@ function Content() {
         LogInfo("Change status for task with index " + taskId + " and new status of " + status.toString())
         ChangeTaskStatus(taskId, status).then(() => {
             tasks[taskIdx].isDone = status
-            setTasks(tasks)
+            setTasks([...tasks])
         }).catch(err => {
             LogError(err)
         })
