@@ -2,7 +2,7 @@ import './Content.css'
 import {ChangeTaskStatus, GetTasks} from "../../../wailsjs/go/main/App";
 import {LogError, LogInfo} from "../../../wailsjs/runtime";
 import Task from "../../model/Task";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Card from "../../components/card/Card";
 
 
@@ -24,6 +24,13 @@ async function LoadTodos(): Promise<Task[]> {
 
 function Content() {
     const [tasks, setTasks] = useState<Task[]>([])
+
+    useEffect(() => {
+        LogInfo(
+            "Occurs ONCE, AFTER the initial render."
+        );
+        loadTasks()
+    }, []);
 
     function loadTasks() {
         LoadTodos().then(apiTasks => {
@@ -49,9 +56,6 @@ function Content() {
                 {tasks.map((task: Task, idx: number) => {
                     return <Card key={task.id} idx={idx} task={task} changeStatus={changeStatus}/>
                 })}
-            </div>
-            <div>
-                <button onClick={() => loadTasks()}>Load Tasks</button>
             </div>
         </div>
     );

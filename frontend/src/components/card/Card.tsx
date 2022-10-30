@@ -1,5 +1,6 @@
 import React from "react";
 import Task from "../../model/Task";
+import "./Card.css"
 
 type CardProps = {
     changeStatus: (taskId: string, taskIdx: number, status: boolean) => void
@@ -15,13 +16,18 @@ function Card({idx, task, changeStatus}: CardProps) {
     }
 
     return (
-        <div>
-            Id: {task.id} / Idx: {idx}
-            Text: {task.text}
-            Status: {task.isDone.toString()}
+        <div className="Card">
+            <div>Id: {task.id} / Idx: {idx}</div>
+            <div>Text: {task.text}</div>
+            <div>Status: {task.isDone.toString()}</div>
             <button onClick={event => {
                 toggleStatus()
-            }}>Toggle
+            }}>{
+                task.isDone && <span>Undone!</span>
+            }
+                {
+                    !task.isDone && <span>Done!</span>
+                }
             </button>
         </div>
     );

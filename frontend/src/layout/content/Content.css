@@ -1,3 +1,9 @@
 #Content {
     min-height: 90vh;
 }
+
+.CardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
