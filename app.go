@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"log"
 )
 
 // App struct
@@ -33,7 +34,7 @@ var todos = map[string]*ToDo{
 		IsDone: false,
 	},
 	"2": &ToDo{
-		Id:     "1",
+		Id:     "2",
 		Text:   "Learn React!",
 		IsDone: false,
 	},
@@ -45,4 +46,9 @@ func (a *App) GetTasks() []*ToDo {
 		list = append(list, item)
 	}
 	return list
+}
+
+func (a *App) ChangeTaskStatus(id string, status bool) {
+	log.Printf("Change status for task: %v to %v", id, status)
+	todos[id].IsDone = status
 }
