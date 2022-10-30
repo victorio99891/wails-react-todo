@@ -1,6 +1,7 @@
 package main
 
 import (
+	"changeme/backend"
 	"embed"
 
 	"github.com/wailsapp/wails/v2"
@@ -13,6 +14,7 @@ var assets embed.FS
 func main() {
 	// Create an instance of the app structure
 	app := NewApp()
+	taskController := backend.NewTaskController()
 
 	// Create application with options
 	err := wails.Run(&options.App{
@@ -24,6 +26,7 @@ func main() {
 		OnStartup:        app.startup,
 		Bind: []interface{}{
 			app,
+			taskController,
 		},
 	})
 

@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"log"
 )
 
 // App struct
@@ -19,37 +18,4 @@ func NewApp() *App {
 // so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
-}
-
-type ToDo struct {
-	Id     string
-	Text   string
-	IsDone bool
-}
-
-var todos = map[string]*ToDo{
-	"1": &ToDo{
-		Id:     "1",
-		Text:   "Buy bread!",
-		IsDone: false,
-	},
-	"2": &ToDo{
-		Id:     "2",
-		Text:   "Learn React!",
-		IsDone: false,
-	},
-}
-
-func (a *App) GetTasks() []*ToDo {
-	list := make([]*ToDo, 0)
-	for _, item := range todos {
-		list = append(list, item)
-	}
-	return list
-}
-
-func (a *App) ChangeTaskStatus(id string, status bool) {
-	log.Printf("Change status for task: %v to %v", id, status)
-	todos[id].IsDone = status
-	log.Println("&v", *todos[id])
 }

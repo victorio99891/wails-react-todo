@@ -1,9 +1,9 @@
 import './Content.css'
-import {ChangeTaskStatus, GetTasks} from "../../../wailsjs/go/main/App";
 import {LogError, LogInfo} from "../../../wailsjs/runtime";
 import Task from "../../model/Task";
 import React, {useEffect, useState} from "react";
 import Card from "../../components/card/Card";
+import {AddTask, ChangeTaskStatus, GetTasks, RemoveTask} from "../../../wailsjs/go/backend/TaskController";
 
 
 async function LoadTodos(): Promise<Task[]> {
@@ -19,6 +19,7 @@ async function LoadTodos(): Promise<Task[]> {
             })
         })
     })
+    tasks.sort((t1, t2) => t1.id.localeCompare(t2.id))
     return tasks
 }
 
@@ -26,11 +27,15 @@ function Content() {
     const [tasks, setTasks] = useState<Task[]>([])
 
     useEffect(() => {
-        LogInfo(
-            "Occurs ONCE, AFTER the initial render."
-        );
+        LogInfo("Initial task load execution!");
         loadTasks()
     }, []);
+
+    function addRandomTask() {
+        AddTask(new Date().toISOString()).then(newTask => {
+            loadTasks()
+        })
+    }
 
     function loadTasks() {
         LoadTodos().then(apiTasks => {
@@ -49,12 +54,31 @@ function Content() {
         })
     }
 
+    function removeTask(taskId: string) {
+        LogInfo("Removing task with id: " + taskId)
+        RemoveTask(taskId).then(() => {
+            loadTasks()
+        }).catch(err => {
+            LogError(err)
+        })
+    }
+
     return (
         <div id="Content">
             <div>Tasks:</div>
+            <div>
+                <button onClick={() => {
+                    addRandomTask()
+                }}>Add random task!
+                </button>
+            </div>
             <div className="CardContainer">
                 {tasks.map((task: Task, idx: number) => {
-                    return <Card key={task.id} idx={idx} task={task} changeStatus={changeStatus}/>
+                    return <Card key={task.id}
+                                 idx={idx}
+                                 task={task}
+                                 changeStatus={changeStatus}
+                                 remove={removeTask}/>
                 })}
             </div>
         </div>
