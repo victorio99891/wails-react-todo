@@ -47,7 +47,7 @@ func (a *TaskController) ChangeTaskStatus(id string, status bool) {
 	log.Println("&v", *todos[id])
 }
 
-func (a *TaskController) AddTask(task string) {
+func (a *TaskController) AddTask(task string) string {
 	newTaskUuid, err := uuid.NewUUID()
 	if err != nil {
 		log.Panic("Can't generate new UUID.")
@@ -60,6 +60,8 @@ func (a *TaskController) AddTask(task string) {
 	}
 
 	todos[newTaskUuid.String()] = newTask
+
+	return newTaskUuid.String()
 }
 
 func (a *TaskController) RemoveTask(taskId string) error {

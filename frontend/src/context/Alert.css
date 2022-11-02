@@ -1,0 +1,12 @@
+.AlertModal {
+    display: flex;
+    align-content: center;
+    justify-content: end;
+    flex-flow: row wrap;
+}
+
+.AlertModal > * {
+    min-width: 30rem;
+    margin: 0.5rem;
+    position: absolute;
+}

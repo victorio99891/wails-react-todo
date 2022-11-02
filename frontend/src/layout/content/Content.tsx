@@ -4,6 +4,7 @@ import Task from "../../model/Task";
 import React, {useEffect, useState} from "react";
 import Card from "../../components/card/Card";
 import {AddTask, ChangeTaskStatus, GetTasks, RemoveTask} from "../../../wailsjs/go/backend/TaskController";
+import {useAlert} from "../../context/Alert";
 
 
 async function LoadTodos(): Promise<Task[]> {
@@ -24,6 +25,7 @@ async function LoadTodos(): Promise<Task[]> {
 }
 
 function Content() {
+    const {setAlert} = useAlert()
     const [tasks, setTasks] = useState<Task[]>([])
 
     useEffect(() => {
@@ -32,9 +34,14 @@ function Content() {
     }, []);
 
     function addRandomTask() {
-        AddTask(new Date().toISOString()).then(newTask => {
-            refreshTasks()
-        })
+        AddTask(new Date().toISOString())
+            .then((newTaskId: string) => {
+                setAlert({
+                    text: `Added: ${newTaskId}`,
+                    type: "success"
+                })
+                refreshTasks()
+            })
     }
 
     function refreshTasks() {
@@ -47,6 +54,10 @@ function Content() {
     function changeStatus(taskId: string, taskIdx: number, status: boolean) {
         LogInfo("Change status for task with index " + taskId + " and new status of " + status.toString())
         ChangeTaskStatus(taskId, status).then(() => {
+            setAlert({
+                text: `Changed status: ${taskId}`,
+                type: "success"
+            })
             tasks[taskIdx].isDone = status
             refreshTasks()
         }).catch(err => {
@@ -55,8 +66,12 @@ function Content() {
     }
 
     function removeTask(taskId: string) {
-        LogInfo("Removing task with id: " + taskId)
+        LogInfo("Removed: " + taskId)
         RemoveTask(taskId).then(() => {
+            setAlert({
+                text: `Removed task with id: ${taskId}`,
+                type: "warning"
+            })
             refreshTasks()
         }).catch(err => {
             LogError(err)
