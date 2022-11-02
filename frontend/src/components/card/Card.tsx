@@ -17,7 +17,7 @@ function Card({idx, task, changeStatus, remove}: CardProps) {
     }
 
     return (
-        <div className="Card">
+        <div className={`Card ${task.isDone ? "ToDo" : "Done"}`}>
             <div>
                 <button onClick={() => {
                     remove(task.id)

@@ -28,16 +28,16 @@ function Content() {
 
     useEffect(() => {
         LogInfo("Initial task load execution!");
-        loadTasks()
+        refreshTasks()
     }, []);
 
     function addRandomTask() {
         AddTask(new Date().toISOString()).then(newTask => {
-            loadTasks()
+            refreshTasks()
         })
     }
 
-    function loadTasks() {
+    function refreshTasks() {
         LoadTodos().then(apiTasks => {
                 setTasks([...apiTasks])
             }
@@ -48,7 +48,7 @@ function Content() {
         LogInfo("Change status for task with index " + taskId + " and new status of " + status.toString())
         ChangeTaskStatus(taskId, status).then(() => {
             tasks[taskIdx].isDone = status
-            setTasks([...tasks])
+            refreshTasks()
         }).catch(err => {
             LogError(err)
         })
@@ -57,7 +57,7 @@ function Content() {
     function removeTask(taskId: string) {
         LogInfo("Removing task with id: " + taskId)
         RemoveTask(taskId).then(() => {
-            loadTasks()
+            refreshTasks()
         }).catch(err => {
             LogError(err)
         })
@@ -65,21 +65,32 @@ function Content() {
 
     return (
         <div id="Content">
-            <div>Tasks:</div>
-            <div>
+            <div className="AddTaskButton">
                 <button onClick={() => {
                     addRandomTask()
                 }}>Add random task!
                 </button>
             </div>
             <div className="CardContainer">
-                {tasks.map((task: Task, idx: number) => {
-                    return <Card key={task.id}
-                                 idx={idx}
-                                 task={task}
-                                 changeStatus={changeStatus}
-                                 remove={removeTask}/>
-                })}
+                <div className="ToDoColumn">
+                    {tasks.filter(t => !t.isDone).map((task: Task, idx: number) => {
+                        return <Card key={task.id}
+                                     idx={idx}
+                                     task={task}
+                                     changeStatus={changeStatus}
+                                     remove={removeTask}/>
+                    })}
+                </div>
+                <div className="DoneColumn">
+                    {tasks.filter(t => t.isDone).map((task: Task, idx: number) => {
+                        return <Card key={task.id}
+                                     idx={idx}
+                                     task={task}
+                                     changeStatus={changeStatus}
+                                     remove={removeTask}/>
+                    })}
+                </div>
+
             </div>
         </div>
     );

@@ -2,8 +2,31 @@
     min-height: 90vh;
 }
 
+.AddTaskButton {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
 .CardContainer {
     display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+.ToDoColumn {
+    width: 50%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: start;
+    align-content: flex-start;
+    /*background-color: green;*/
+}
+
+.DoneColumn {
+    width: 50%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: start;
+    align-content: flex-start;
+    /*background-color: rebeccapurple;*/
 }

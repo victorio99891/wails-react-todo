@@ -1,7 +1,17 @@
 .Card {
-    background-color: steelblue;
-    width: 12.5rem;
+    min-width: 11rem;
+    max-width: 11rem;
+    min-height: 8rem;
+    max-height: 8rem;
     padding: 1rem;
     margin: 0.5rem;
     border-radius: 0.5rem;
+}
+
+.ToDo {
+    background-color: #4cabff;
+}
+
+.Done {
+    background-color: dodgerblue;
 }
