@@ -1,8 +1,8 @@
 package main
 
 import (
-	"changeme/backend"
 	"embed"
+	"go-wails-react/backend"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
