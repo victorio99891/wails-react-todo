@@ -5,6 +5,8 @@ import React, {useEffect, useState} from "react";
 import Card from "../../components/card/Card";
 import {AddTask, ChangeTaskStatus, GetTasks, RemoveTask} from "../../../wailsjs/go/backend/TaskController";
 import {useAlert} from "../../context/Alert";
+import {Button} from "@mui/material";
+import {LoadFileData, SelectFile, ShowMessage} from "../../../wailsjs/go/backend/FileController";
 
 
 async function LoadTodos(): Promise<Task[]> {
@@ -44,6 +46,24 @@ function Content() {
             })
     }
 
+    function chooseFile() {
+        SelectFile().then((filename: string) => {
+            LoadFileData(filename).then(items => {
+                const msg = `Loaded ${items.length} row(s).
+                 File '${filename}'. 
+                 First is: ${JSON.stringify(items.slice(0, 1))}`
+                ShowMessage(msg).catch(err => {
+                    LogError(err)
+                })
+            }).catch(err => {
+                LogError(err)
+            })
+
+        }).catch(err => {
+            LogError(err)
+        })
+    }
+
     function refreshTasks() {
         LoadTodos().then(apiTasks => {
                 setTasks([...apiTasks])
@@ -81,10 +101,14 @@ function Content() {
     return (
         <div id="Content">
             <div className="AddTaskButton">
-                <button onClick={() => {
+                <Button variant="contained" onClick={() => {
                     addRandomTask()
                 }}>Add random task!
-                </button>
+                </Button>
+                <Button variant="contained" onClick={() => {
+                    chooseFile()
+                }}>Select file!
+                </Button>
             </div>
             <div className="CardContainer">
                 <div className="ToDoColumn">

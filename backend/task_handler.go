@@ -1,6 +1,7 @@
 package backend
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"github.com/google/uuid"
@@ -8,10 +9,13 @@ import (
 )
 
 type TaskController struct {
+	ctx *context.Context
 }
 
-func NewTaskController() *TaskController {
-	return &TaskController{}
+func NewTaskController(appCtx *context.Context) *TaskController {
+	return &TaskController{
+		ctx: appCtx,
+	}
 }
 
 type Task struct {
@@ -21,12 +25,12 @@ type Task struct {
 }
 
 var todos = map[string]*Task{
-	"fd99ccf4-9fe0-41fc-9e91-e28b87cbcf1b": &Task{
+	"fd99ccf4-9fe0-41fc-9e91-e28b87cbcf1b": {
 		Id:     "fd99ccf4-9fe0-41fc-9e91-e28b87cbcf1b",
 		Text:   "Buy bread!",
 		IsDone: false,
 	},
-	"464fde1d-7571-4181-94ae-6a2fd24a5fc3": &Task{
+	"464fde1d-7571-4181-94ae-6a2fd24a5fc3": {
 		Id:     "464fde1d-7571-4181-94ae-6a2fd24a5fc3",
 		Text:   "Learn React!",
 		IsDone: false,
@@ -67,7 +71,7 @@ func (a *TaskController) AddTask(task string) string {
 func (a *TaskController) RemoveTask(taskId string) error {
 	if todos[taskId] == nil {
 		msg := fmt.Sprintf("No task with id: %v", taskId)
-		log.Fatal(msg)
+		log.Println(msg)
 		return errors.New(msg)
 	}
 

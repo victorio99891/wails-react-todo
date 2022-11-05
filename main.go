@@ -14,7 +14,8 @@ var assets embed.FS
 func main() {
 	// Create an instance of the app structure
 	app := NewApp()
-	taskController := backend.NewTaskController()
+	taskController := backend.NewTaskController(&app.ctx)
+	fileController := backend.NewFileController(&app.ctx)
 
 	// Create application with options
 	err := wails.Run(&options.App{
@@ -27,6 +28,7 @@ func main() {
 		Bind: []interface{}{
 			app,
 			taskController,
+			fileController,
 		},
 	})
 
