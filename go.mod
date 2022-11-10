@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/google/uuid v1.3.0
+	github.com/mattn/go-sqlite3 v1.14.16
 	github.com/shakinm/xlsReader v0.9.12
 	github.com/wailsapp/wails/v2 v2.1.0
 )

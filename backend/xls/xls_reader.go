@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"go-wails-react/backend/model"
 	"log"
 	"time"
 
@@ -13,29 +14,6 @@ import (
 )
 
 const reportFilePath = "/Users/wkrzyzanowski/Downloads/vehicles_shipper_notification.xls"
-
-type VehicleWorkbookStructure struct {
-	Id                      string     `json:"uuid"`
-	Status                  string     `json:"status"`
-	ForwarderAdviceNoteDate *time.Time `json:"forwarderAdviceNoteDate"`
-	VINNumber               string     `json:"vinNumber"`
-	ProductionNumberKnr     string     `json:"productionNumberKnr"`
-	DispositionType         string     `json:"dispositionType"`
-	ShippingClass           string     `json:"shippingClass"`
-	Weight                  string     `json:"weight"`
-	FieldKey                string     `json:"fieldKey"`
-	Destination             string     `json:"destination"`
-	DestinationStage        string     `json:"destinationStage"`
-	Model                   string     `json:"model"`
-	MRNNumber               string     `json:"mrnNumber"`
-	ForwarderId             string     `json:"forwarderId"`
-	ForwarderName           string     `json:"forwarderName"`
-	DistributorName         string     `json:"distributorName"`
-	DistributorStreet       string     `json:"distributorStreet"`
-	DistributorPostalCode   string     `json:"distributorPostalCode"`
-	DistributorCity         string     `json:"distributorCity"`
-	ExtraDescription        string     `json:"extraDescription"`
-}
 
 func RunReader() {
 	log.Println("Loading XLS file...")
@@ -74,10 +52,10 @@ func GetWorkbookSheets(workbook *xls.Workbook) map[int]*xls.Sheet {
 	return sheets
 }
 
-func GetAllSheetRowsData(sheet *xls.Sheet) ([]*VehicleWorkbookStructure, error) {
+func GetAllSheetRowsData(sheet *xls.Sheet) ([]*model.LogisticTask, error) {
 	firstDataRowIdx := 1 // First contain columns names only®
 	log.Printf("Loading %v row(s) data from sheet '%v'", sheet.GetNumberRows()-1, sheet.GetName())
-	list := make([]*VehicleWorkbookStructure, 0)
+	list := make([]*model.LogisticTask, 0)
 	for ridx := firstDataRowIdx; ridx < sheet.GetNumberRows(); ridx++ {
 		mapped, err := getVehicleWorkbookRow(sheet, ridx)
 		if err != nil {
@@ -89,7 +67,7 @@ func GetAllSheetRowsData(sheet *xls.Sheet) ([]*VehicleWorkbookStructure, error) 
 	return list, nil
 }
 
-func GetSingleSheetRowsData(sheet *xls.Sheet, rIdx int) (*VehicleWorkbookStructure, error) {
+func GetSingleSheetRowsData(sheet *xls.Sheet, rIdx int) (*model.LogisticTask, error) {
 	log.Printf("Loading single row no. '%v' data from sheet '%v'", rIdx, sheet.GetName())
 
 	cell, err := getCell(sheet, rIdx, 0)
@@ -110,14 +88,14 @@ func GetSingleSheetRowsData(sheet *xls.Sheet, rIdx int) (*VehicleWorkbookStructu
 	return mappedRow, nil
 }
 
-func getVehicleWorkbookRow(sheet *xls.Sheet, ridx int) (*VehicleWorkbookStructure, error) {
+func getVehicleWorkbookRow(sheet *xls.Sheet, ridx int) (*model.LogisticTask, error) {
 	rdmUuid, err := uuid.NewUUID()
 	if err != nil {
 		log.Println("Can't generate new UUID.")
 		return nil, err
 	}
 
-	return &VehicleWorkbookStructure{
+	return &model.LogisticTask{
 		Id:                      rdmUuid.String(),
 		Status:                  getCellStringValue(sheet, ridx, 0),
 		ForwarderAdviceNoteDate: parseDate(getCellStringValue(sheet, ridx, 1)),
